@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nifi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nifi
+  template:
+    metadata:
+      labels:
+        app: nifi
+    spec:
+      containers:
+        - name: app
+          image: apache/nifi:1.11.4
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: nifi
+spec:
+    selector:
+        app: nifi
+    ports:
+        - port: 8080
+          targetPort: 8080
+    type: LoadBalancer
